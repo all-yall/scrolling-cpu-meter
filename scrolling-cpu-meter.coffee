@@ -1,7 +1,8 @@
-
+#left side of the screen is true and right side of the screen is false
+to_the_left=true
 
 #number of bars
-ARRAYSIZE=39
+ARRAYSIZE=40
 
 #do you want colors? if false all bars are colorOne, so change that color.
 colors=true
@@ -27,6 +28,8 @@ render: ->"""
 
 
 update:(output,domEl) ->
+  if  output>100
+    output=100
   Values=[output].concat Values[0..-2]
   for x in [0..ARRAYSIZE]
     element=$(domEl).find(".graph"+x)
@@ -48,15 +51,20 @@ update:(output,domEl) ->
 
 #change the style as you want
 style: """
-  left: .1%
-  top: 0%
-
-  .bar{
+  if  #{to_the_left}
+    left: .1%
+    top: 0%
+  else 
+    right: .1%
+    top: 0%
+  
+  .bar
     border: 2px solid rgba(0,0,0,0)
     border-radius:10px
     margin-top:5px
     width: 0px
     height: 7px
-  }
+    if  #{!to_the_left}
+      margin-left:auto
   """
 
