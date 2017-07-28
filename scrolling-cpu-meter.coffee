@@ -1,7 +1,10 @@
-#left side of the screen is true and right side of the screen is false
-to_the_left=true
+#do you want it on the left side of the screen or the right?
+on_the_left=true
 
-#number of bars
+#do you want it to update at the top or the bottom?
+from_the_top=true
+
+#number of bars +1, (i.e. 0 means 1 bar, and 21 means 22)
 ARRAYSIZE=40
 
 #do you want colors? if false all bars are colorOne, so change that color.
@@ -32,7 +35,11 @@ update:(output,domEl) ->
     output=100
   Values=[output].concat Values[0..-2]
   for x in [0..ARRAYSIZE]
-    element=$(domEl).find(".graph"+x)
+    element=null
+    if  from_the_top
+      element=$(domEl).find(".graph"+x)
+    else
+      element=$(domEl).find(".graph"+(ARRAYSIZE-x))
     Value=Values[x]*1
     element.css("width",Value+"px") 
     if !colors && Value!=0
@@ -51,12 +58,15 @@ update:(output,domEl) ->
 
 #change the style as you want
 style: """
-  if  #{to_the_left}
+  if  #{on_the_left}
     left: .1%
-    top: 0%
   else 
     right: .1%
+
+  if #{from_the_top}
     top: 0%
+  else
+    bottom:0%
   
   .bar
     border: 2px solid rgba(0,0,0,0)
@@ -64,7 +74,7 @@ style: """
     margin-top:5px
     width: 0px
     height: 7px
-    if  #{!to_the_left}
+    if  #{!on_the_left}
       margin-left:auto
   """
 
