@@ -10,12 +10,17 @@ ARRAYSIZE=40
 #do you want colors? if false all bars are colorOne, so change that color.
 colors=true
 
-#colors for the bars, currently it matches my color scheme. you probably want to change these
-colorOne="rgb(50,39,72)"
-colorTwo="rgb(43,86,114)"
-colorThree="rgb(49,168,150)"
-colorFour="rgb(185,214,102)"
+#There are two different styles of bars, hexagonal and rounded, set to true for hex and false for rounded
+styleHex=false
 
+#colors for the bars, currently it matches my color scheme. you probably want to change these
+colorOne="rgb(255, 255, 255)"
+colorTwo="rgb(0, 136, 0)"
+colorThree="rgb(203, 252, 0)"
+colorFour="rgb(152, 19, 19)"
+
+
+#####SHOULDN"T HAVE TO TOUCH ANYTHING AFTER THIS (I mean unless you know what your doing i guess)
 #don't touch plz, this is the array used to store all the values
 Values=(0 for num in [0..ARRAYSIZE])
 
@@ -27,19 +32,21 @@ command: "ps -A -o %cpu | awk '{s+=$1} END {print s}'"
 refreshFrequency: 1000
 
 render: ->"""
-"""+("<div class=\"bar graph#{val}\"></div>" for val in [0..ARRAYSIZE]).toString().replace /,/g,""
+"""+("<div class=\"barcpu graphcpu#{val}\"><div class='pointlcpu'></div><div class='pointrcpu'></div></div>" for val in [0..ARRAYSIZE]).toString().replace /,/g,""
 
 
 update:(output,domEl) ->
-  if  output>100
+  if output<8
+    output=8
+  else if  output>100
     output=100
   Values=[output].concat Values[0..-2]
   for x in [0..ARRAYSIZE]
     element=null
     if  from_the_top
-      element=$(domEl).find(".graph"+x)
+      element=$(domEl).find(".graphcpu"+x)
     else
-      element=$(domEl).find(".graph"+(ARRAYSIZE-x))
+      element=$(domEl).find(".graphcpu"+(ARRAYSIZE-x))
     Value=Values[x]*1
     element.css("width",Value+"px") 
     if !colors && Value!=0
@@ -67,14 +74,46 @@ style: """
     top: 0%
   else
     bottom:0%
-  
-  .bar
-    border: 2px solid rgba(0,0,0,0)
-    border-radius:10px
-    margin-top:5px
-    width: 0px
-    height: 7px
-    if  #{!on_the_left}
-      margin-left:auto
+
+  if #{styleHex}
+    .barcpu
+      border-bottom: 2px solid rgba(0,0,0,0)
+      border-top: 2px solid rgba(0,0,0,0)
+      height: 9px
+      margin: 10px 8px
+      border-color:rgba(0,0,0,0)
+  else
+    .barcpu
+      border: 2px solid rgba(0,0,0,0)
+      border-radius:10px
+      margin-top:5px
+      height: 7px
+
+  .barcpu
+      width: 0px
+      if  #{!on_the_left}
+        margin-left:auto
+  if #{styleHex}
+    .pointlcpu
+      display:inline-block
+      padding:3px
+      -webkit-transform: scaleX(.5) rotate(-45deg)
+      border-left:#{colorFour} solid 3px
+      border-top:#{colorFour} solid 3px
+      margin-left:-5px
+      border-color:inherit
+      float:left
+
+
+    .pointrcpu
+      display:inline-block
+      padding: 3px
+      -webkit-transform: scaleX(.5) rotate(-45deg)
+      border-right:red solid 3px
+      border-bottom:red solid 3px
+      margin-right:-5px
+      border-color:inherit
+      float:right
+    
   """
 
