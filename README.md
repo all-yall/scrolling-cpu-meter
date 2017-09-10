@@ -12,3 +12,4 @@ these are the options present in the .coffee
 * update from the top or bottom
 * rounded (what's in the picture) or hexagonal bars
 * number of bars
+* you can also change the command to be anything that returns a value from 1 - 100, and it will work
