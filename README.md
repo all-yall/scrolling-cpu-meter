@@ -9,7 +9,7 @@ these are the options present in the .coffee
 * left or right side of the screen
 * enable colors
 * choose colors (in rgb format, i.e. rgb(10,40,255))
-* update from the top or bottom
+* update from the top or bottom (scroll up from the bottom, or down from the top)
 * rounded (what's in the picture) or hexagonal bars
 * number of bars
 * you can also change the command to be anything that returns a value from 1 - 100, and it will work
