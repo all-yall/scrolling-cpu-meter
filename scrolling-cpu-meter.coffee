@@ -20,7 +20,7 @@ colorThree="rgb(203, 252, 0)"
 colorFour="rgb(152, 19, 19)"
 
 
-#####SHOULDN"T HAVE TO TOUCH ANYTHING AFTER THIS (I mean unless you know what your doing i guess)
+#####SHOULDN"T HAVE TO TOUCH ANYTHING AFTER THIS (I mean unless you know what you're doing i guess)
 #don't touch plz, this is the array used to store all the values
 Values=(0 for num in [0..ARRAYSIZE])
 
